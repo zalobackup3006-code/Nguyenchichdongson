@@ -1,551 +1,9 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đánh Giá Năng Lực Tiếng Anh Lớp 6</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Pangolin&display=swap" rel="stylesheet">
-    <style>
-        /* Custom Styles for EdTech Vibe */
-        :root {
-            --primary: #4F46E5; /* Indigo 600 */
-            --secondary: #ec4899; /* Pink 500 */
-            --success: #10B981;
-            --error: #EF4444;
-            --bg-grad-start: #EEF2FF;
-            --bg-grad-end: #FDF4FF;
-        }
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
-            min-height: 100vh;
-            color: #1F2937;
-            padding-bottom: 2rem;
-        }
-
-        h1, h2, h3, .brand-font {
-            font-family: 'Pangolin', cursive;
-        }
-
-        /* Glassmorphism Card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        /* Sticky Passage for Reading */
-        .sticky-passage {
-            max-height: 250px;
-            overflow-y: auto;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: #FFFBEB; /* Light Amber */
-            border: 2px dashed #FCD34D;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #c7c7cc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
-
-        /* Form Inputs */
-        .ed-input {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.25rem;
-            border: 3px solid #E5E7EB;
-            border-radius: 1rem;
-            transition: all 0.3s;
-            outline: none;
-        }
-        .ed-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
-        }
-
-        /* MCQ Buttons */
-        .mcq-btn {
-            width: 100%;
-            text-align: left;
-            padding: 1rem 1.5rem;
-            margin-bottom: 0.75rem;
-            border: 3px solid #E5E7EB;
-            border-radius: 1rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            background: white;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        .mcq-btn:hover:not(:disabled) {
-            border-color: var(--primary);
-            background: #EEF2FF;
-            transform: translateY(-2px);
-        }
-        .mcq-btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
-        .mcq-btn.correct {
-            background: #D1FAE5;
-            border-color: var(--success);
-            color: #065F46;
-        }
-        .mcq-btn.wrong {
-            background: #FEE2E2;
-            border-color: var(--error);
-            color: #991B1B;
-        }
-
-        /* Action Buttons */
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), #6366F1);
-            color: white;
-            font-weight: 800;
-            padding: 1rem 2rem;
-            border-radius: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4);
-            font-size: 1.25rem;
-            width: 100%;
-        }
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.5);
-        }
-        .btn-primary:disabled {
-            background: #9CA3AF;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* Reorder Words (Touch Logic) */
-        .word-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: white;
-            border: 2px solid #D1D5DB;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            font-size: 1.125rem;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s;
-            box-shadow: 0 2px 0 #9CA3AF;
-        }
-        .word-badge:active {
-            transform: translateY(2px);
-            box-shadow: 0 0 0 #9CA3AF;
-        }
-        .word-badge:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        #answer-dropzone {
-            min-height: 80px;
-            border: 3px dashed #A78BFA;
-            background: #F5F3FF;
-            border-radius: 1rem;
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-content: flex-start;
-        }
-
-        /* Toast Animation */
-        .toast-container {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            width: 90%;
-            max-width: 500px;
-            pointer-events: none;
-        }
-        .toast {
-            padding: 1rem 1.5rem;
-            border-radius: 1rem;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            opacity: 0;
-            pointer-events: auto;
-        }
-        .toast.success { background: var(--success); }
-        .toast.error { background: var(--error); }
-        .toast-exp {
-            font-size: 0.9rem;
-            font-weight: normal;
-            margin-top: 0.5rem;
-            background: rgba(0,0,0,0.1);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }
-        @keyframes slideUp {
-            0% { transform: translateY(100px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Utility */
-        .hidden { display: none !important; }
-        .celebrate { animation: pop 0.5s ease; }
-        @keyframes pop { 50% { transform: scale(1.1); } }
-    </style>
-</head>
-<body>
-
-    <!-- MÀN HÌNH CHÀO MỪNG -->
-    <div id="welcome-screen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card p-8 max-w-md w-full text-center">
-            <div class="text-6xl mb-4">🌟</div>
-            <h1 class="text-3xl font-bold text-indigo-700 mb-2">Đánh Giá Năng Lực</h1>
-            <p class="text-gray-600 mb-6 font-bold text-lg">Môn Tiếng Anh Lớp 6</p>
-            
-            <div class="mb-6 text-left">
-                <label class="block text-gray-700 font-bold mb-2">Họ và tên của em:</label>
-                <input type="text" id="student-name-input" class="ed-input" placeholder="Nhập tên em vào đây..." autocomplete="off">
-                <p id="name-error" class="text-red-500 text-sm mt-2 hidden">Em nhớ nhập tên nhé!</p>
-            </div>
-            
-            <button onclick="app.startQuiz()" class="btn-primary flex items-center justify-center gap-2">
-                Bắt Đầu Làm Bài 🚀
-            </button>
-        </div>
-    </div>
-
-    <!-- MÀN HÌNH LÀM BÀI CHÍNH -->
-    <div id="app-screen" class="hidden max-w-3xl mx-auto p-4 pt-6">
-        
-        <!-- Header & Nav -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 glass-card p-4">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-600">
-                    👦
-                </div>
-                <div>
-                    <div class="text-sm text-gray-500 font-bold">Học sinh</div>
-                    <div id="display-name" class="font-bold text-xl text-indigo-800 brand-font">Student Name</div>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="flex-1 md:w-48">
-                    <div class="flex justify-between text-sm font-bold text-indigo-600 mb-1">
-                        <span>Tiến độ</span>
-                        <span id="progress-text">0/40</span>
-                    </div>
-                    <div class="h-3 bg-indigo-100 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-green-400 to-green-500 w-0 transition-all duration-500"></div>
-                    </div>
-                </div>
-                
-                <!-- Quick Nav -->
-                <select id="quick-nav" class="bg-white border-2 border-indigo-200 text-indigo-700 rounded-xl px-3 py-2 font-bold cursor-pointer outline-none focus:border-indigo-500" onchange="app.jumpToQuestion(this.value)">
-                    <!-- Options generated via JS -->
-                </select>
-            </div>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="glass-card p-6 md:p-8 relative">
-            <div id="section-title" class="text-sm font-extrabold tracking-wider text-pink-500 mb-2 uppercase">SECTION A: LISTENING</div>
-            <div id="instruction-text" class="text-lg text-gray-600 mb-4 font-semibold italic">Listen to the conversation and circle...</div>
-            
-            <!-- Sticky Reading Passage (Hidden by default) -->
-            <div id="passage-container" class="sticky-passage hidden text-lg leading-relaxed text-gray-800 font-medium">
-                <!-- Content -->
-            </div>
-
-            <div class="mt-4">
-                <div class="flex items-start gap-3 mb-6">
-                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md brand-font" id="q-number">
-                        1
-                    </div>
-                    <h2 id="q-text" class="text-2xl font-bold text-gray-800 pt-1 leading-snug">Question text goes here?</h2>
-                </div>
-
-                <!-- DYNAMIC INPUT AREA -->
-                <div id="input-area" class="mt-4">
-                    <!-- MCQ / Text Input / Reorder will be injected here -->
-                </div>
-            </div>
-            
-            <!-- Controls -->
-            <div class="mt-8 flex flex-col md:flex-row gap-4 pt-4 border-t-2 border-gray-100">
-                <button id="btn-check" class="btn-primary bg-indigo-600 md:w-auto flex-1" onclick="app.checkManualInput()">
-                    Kiểm tra đáp án 🔍
-                </button>
-                <button id="btn-next" class="btn-primary hidden md:w-auto flex-1 !bg-green-500 shadow-green-500/50" onclick="app.nextQuestion()">
-                    Câu tiếp theo ➡️
-                </button>
-                <button id="btn-finish" class="btn-primary hidden md:w-auto flex-1 !bg-pink-500 shadow-pink-500/50" onclick="app.showReport()">
-                    Xem Báo Cáo Tổng Hợp 🏆
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MÀN HÌNH BÁO CÁO KẾT QUẢ -->
-    <div id="report-screen" class="hidden max-w-4xl mx-auto p-4 pt-6">
-        <div class="glass-card p-8 text-center">
-            <h1 class="text-4xl text-indigo-700 font-bold mb-2 brand-font">BÁO CÁO KẾT QUẢ</h1>
-            <p class="text-xl text-gray-600 font-bold mb-8">Học sinh: <span id="report-name" class="text-pink-500"></span></p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-blue-50 rounded-2xl p-6 border-2 border-blue-200">
-                    <div class="text-5xl mb-2">🎯</div>
-                    <div class="text-3xl font-extrabold text-blue-700" id="stat-total">40/40</div>
-                    <div class="text-blue-600 font-bold mt-1">Tổng câu đã làm</div>
-                </div>
-                <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
-                    <div class="text-5xl mb-2">⭐</div>
-                    <div class="text-3xl font-extrabold text-green-700" id="stat-perfect">0</div>
-                    <div class="text-green-600 font-bold mt-1">Perfect (Đúng ngay lần 1)</div>
-                </div>
-                <div class="bg-orange-50 rounded-2xl p-6 border-2 border-orange-200">
-                    <div class="text-5xl mb-2">💪</div>
-                    <div class="text-3xl font-extrabold text-orange-700" id="stat-redo">0</div>
-                    <div class="text-orange-600 font-bold mt-1">Redo (Đã sửa lại cho đúng)</div>
-                </div>
-            </div>
-
-            <div class="text-left bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
-                <div class="bg-gray-100 px-4 py-3 border-b-2 border-gray-200 font-bold text-gray-700">
-                    Chi tiết các câu cần lưu ý (Redo)
-                </div>
-                <div class="max-h-96 overflow-y-auto p-0">
-                    <table class="w-full text-left border-collapse">
-                        <thead class="bg-gray-50 text-gray-600 sticky top-0">
-                            <tr>
-                                <th class="p-3 border-b font-bold w-16 text-center">Câu</th>
-                                <th class="p-3 border-b font-bold">Nội dung</th>
-                                <th class="p-3 border-b font-bold text-red-600">Sai lần cuối</th>
-                                <th class="p-3 border-b font-bold text-green-600">Đáp án chuẩn</th>
-                            </tr>
-                        </thead>
-                        <tbody id="report-table-body" class="text-gray-800 font-medium">
-                            <!-- Injected rows -->
-                        </tbody>
-                    </table>
-                    <div id="no-errors-msg" class="p-8 text-center text-green-600 font-bold text-lg hidden">
-                        Tuyệt vời! Em đã đúng tất cả các câu ngay từ lần đầu tiên! 🎉
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="location.reload()" class="btn-primary mt-8 inline-block w-auto">
-                Làm Lại Từ Đầu 🔄
-            </button>
-        </div>
-    </div>
-
-    <!-- Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- APPLICATION LOGIC -->
-    <script>
-        // DATA INJECTION: 40 Questions meticulously mapped
-        const DATA = [
-            // SECTION A: LISTENING
-            { id: 1, section: "SECTION A: LISTENING", inst: "Question 1: Listen to the conversation. Circle A, B, C or D to complete the sentences.", q: "What happened to Steve's school basketball team on Saturday morning?", type: "mcq", options: ["A. They won the match.", "B. They didn't play.", "C. They lost the match.", "D. They cancelled the match."], ans: "C", exp: "Đoạn ghi âm: 'I played basketball for the school team on Saturday morning but we lost'. (Đội bóng đã thua trận)." },
-            { id: 2, section: "SECTION A: LISTENING", inst: "Question 1: Listen to the conversation.", q: "How long did Steve and his brother wait for the next bus?", type: "mcq", options: ["A. Ten minutes.", "B. Half an hour.", "C. One hour.", "D. Two hours."], ans: "B", exp: "Đoạn ghi âm: 'we missed the bus so we waited half an hour for the next bus'. (Bọn mình lỡ chuyến nên đã chờ nửa tiếng)." },
-            { id: 3, section: "SECTION A: LISTENING", inst: "Question 1: Listen to the conversation.", q: "What film did Steve see at the cinema?", type: "mcq", options: ["A. A film about space.", "B. A film about history.", "C. A film about school.", "D. A science fiction ... in 3D."], ans: "D", exp: "Đoạn ghi âm: 'We saw a science fiction film in 3D'. (Bọn mình đã xem phim khoa học viễn tưởng 3D)." },
-            { id: 4, section: "SECTION A: LISTENING", inst: "Question 1: Listen to the conversation.", q: "Steve thought the film was not good because ...................", type: "mcq", options: ["A. the story was boring.", "B. the story was sad.", "C. it was very scary.", "D. the music was loud."], ans: "A", exp: "Đoạn ghi âm: 'Was it good? No, the story was boring'. (Không hay vì cốt truyện rất nhàm chán)." },
-            { id: 5, section: "SECTION A: LISTENING", inst: "Question 1: Listen to the conversation.", q: "Why was the barbecue in the garden on Sunday not much fun?", type: "mcq", options: ["A. Because Steve had to go to school.", "B. Because it rained.", "C. Because nobody came to the party.", "D. Because they didn't have enough food."], ans: "B", exp: "Đoạn ghi âm: 'we had a barbecue in the garden but it rained so it wasn't much fun'. (Tiệc BBQ không vui vì trời đã đổ mưa)." },
-            
-            // SECTION B: PHONETICS, VOCABULARY AND GRAMMAR
-            { id: 6, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 2: Choose the word whose underlined part is pronounced differently.", q: "Phát âm phần gạch chân: A. h<u>ou</u>se | B. h<u>e</u>re | C. h<u>ou</u>r | D. h<u>o</u>mework", type: "mcq", options: ["A. house", "B. here", "C. hour", "D. homework"], ans: "C", exp: "Từ 'hour' có âm 'h' câm (/aʊər/), các từ còn lại âm 'h' được phát âm rõ." },
-            { id: 7, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 2: Choose the word whose underlined part is pronounced differently.", q: "Phát âm đuôi -ed: A. play<u>ed</u> | B. walk<u>ed</u> | C. watch<u>ed</u> | D. laugh<u>ed</u>", type: "mcq", options: ["A. played", "B. walked", "C. watched", "D. laughed"], ans: "A", exp: "'played' phát âm là /d/, các từ còn lại có tận cùng là âm vô thanh /k/, /tʃ/, /f/ nên -ed phát âm là /t/." },
-            { id: 8, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 2: Choose the word whose underlined part is pronounced differently.", q: "Phát âm đuôi -s: A. apple<u>s</u> | B. table<u>s</u> | C. bed<u>s</u> | D. desk<u>s</u>", type: "mcq", options: ["A. apples", "B. tables", "C. beds", "D. desks"], ans: "D", exp: "Tận cùng 'desk' là âm /k/ vô thanh -> thêm -s đọc là /s/. Các từ kia đọc là /z/." },
-            { id: 9, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 3: Choose the word whose stress is different from the others.", q: "Trọng âm khác vị trí: A. machine | B. village | C. children | D. people", type: "mcq", options: ["A. machine", "B. village", "C. children", "D. people"], ans: "A", exp: "'machine' nhấn âm tiết thứ 2 (ma'chine). Các từ còn lại nhấn âm 1." },
-            { id: 10, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 4: Choose the best answer A, B, C or D.", q: "Look at those dark clouds! It ___________ very soon.", type: "mcq", options: ["A. is going to rain", "B. will rain", "C. rains", "D. is raining"], ans: "A", exp: "Dấu hiệu 'dark clouds' (mây đen) là bằng chứng ở hiện tại -> dùng Tương lai gần 'is going to rain' (sắp mưa)." },
-            { id: 11, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 4: Choose the best answer A, B, C or D.", q: "___________ is it from your school to the nearest bus - stop?", type: "mcq", options: ["A. How long", "B. How often", "C. How many", "D. How far"], ans: "D", exp: "Hỏi về khoảng cách (từ trường đến trạm xe buýt) ta dùng 'How far'." },
-            { id: 12, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 4: Choose the best answer A, B, C or D.", q: "Tom has a bad toothache, so he ___________ see the dentist this afternoon.", type: "mcq", options: ["A. should", "B. mustn't", "C. needn't", "D. won't"], ans: "A", exp: "Bị đau răng (toothache) thì lời khuyên là 'should' (nên) đi khám nha sĩ." },
-            { id: 13, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 4: Choose the best answer A, B, C or D.", q: "I can play the piano, ___________ I'm not really good at it.", type: "mcq", options: ["A. or", "B. so", "C. because", "D. but"], ans: "D", exp: "Hai vế mang nghĩa đối lập: Biết chơi 'NHƯNG' (but) không giỏi lắm." },
-            { id: 14, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 4: Choose the best answer A, B, C or D.", q: "- ___________ ? - He is tall and thin with short black hair.", type: "mcq", options: ["A. What is your new friend like?", "B. What does your new friend like?", "C. How old is your new friend?", "D. What does your new friend look like?"], ans: "D", exp: "Câu trả lời miêu tả ngoại hình (tall, thin...) -> Câu hỏi phải là 'What does... look like?' (Trông anh ấy như thế nào?)." },
-            { id: 15, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 5: Write the correct tense or form of the verbs in brackets.", q: "___________ they (buy) ___________ this house two years ago?", type: "input", ans: "Did they buy", exp: "Có 'two years ago' -> Quá khứ đơn. Câu hỏi: Did + S + V(nguyên thể)." },
-            { id: 16, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 5: Write the correct tense or form of the verbs in brackets.", q: "Five kilometers (be) ___________ too far for us to walk.", type: "input", ans: "is", exp: "Khoảng cách (5 kilometers), số tiền, thời gian luôn dùng động từ số ít 'is'." },
-            { id: 17, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 5: Write the correct tense or form of the verbs in brackets.", q: "We promise we (help) ___________ you clean up the school yard tomorrow.", type: "input", ans: "will help", exp: "Có 'promise' (hứa) và 'tomorrow' -> dùng thì Tương lai đơn (will + V)." },
-            { id: 18, section: "SECTION B: PHONETICS & GRAMMAR", inst: "Question 5: Write the correct tense or form of the verbs in brackets.", q: "Turn off the lights before (leave) ___________ the classroom.", type: "input", ans: "leaving", exp: "Sau giới từ (before, after, in, on...) động từ phải thêm đuôi -ing." },
-            
-            // SECTION C: READING COMPREHENSION
-            { id: 19, section: "SECTION C: READING", inst: "Question 6: Fill in each blank with ONE suitable word from the box: [works, primary, because, books, and]", passage: "Tet, or the Lunar New Year, is the most important festival in Vietnam, bringing family members together after a long year. I still remember how excited I was during Tet when I was just a student at a <span class='bg-yellow-300 px-2 font-bold'>(19)</span> school. Before Tet, my whole family gets very busy preparing for the holiday. My father <span class='bg-yellow-300 px-2 font-bold'>(20)</span> as a driver, he takes care of cleaning the house and decorating the living room with beautiful peach blossoms. Meanwhile, my mother bought a lot of ingredients to cook traditional dishes. Instead of buying new toys, my parents always give my sister and me some comic <span class='bg-yellow-300 px-2 font-bold'>(21)</span> along with lucky money on the first day of the New Year. Everyone in my family feels extremely happy <span class='bg-yellow-300 px-2 font-bold'>(22)</span> excited during this special occasion. I love Tet the most <span class='bg-yellow-300 px-2 font-bold'>(23)</span> it is a wonderful time for us to gather, enjoy delicious food and wish each other a happy and healthy year ahead.", q: "Điền từ vào vị trí (19):", type: "input", hint: "Từ gọi ý: works, primary, because, books, and", ans: "primary", exp: "Cụm từ: 'primary school' (trường tiểu học)." },
-            { id: 20, section: "SECTION C: READING", inst: "Question 6: Fill in the blank", passage: "(Dùng chung văn bản câu 19)", q: "Điền từ vào vị trí (20):", type: "input", hint: "Từ gọi ý: works, primary, because, books, and", ans: "works", exp: "My father + động từ số ít 'works'. 'works as a driver' (làm nghề tài xế)." },
-            { id: 21, section: "SECTION C: READING", inst: "Question 6: Fill in the blank", passage: "(Dùng chung văn bản câu 19)", q: "Điền từ vào vị trí (21):", type: "input", hint: "Từ gọi ý: works, primary, because, books, and", ans: "books", exp: "Cụm từ: 'comic books' (truyện tranh)." },
-            { id: 22, section: "SECTION C: READING", inst: "Question 6: Fill in the blank", passage: "(Dùng chung văn bản câu 19)", q: "Điền từ vào vị trí (22):", type: "input", hint: "Từ gọi ý: works, primary, because, books, and", ans: "and", exp: "Nối hai tính từ đồng chức năng: happy 'and' excited (vui vẻ và hào hứng)." },
-            { id: 23, section: "SECTION C: READING", inst: "Question 6: Fill in the blank", passage: "(Dùng chung văn bản câu 19)", q: "Điền từ vào vị trí (23):", type: "input", hint: "Từ gọi ý: works, primary, because, books, and", ans: "because", exp: "Chỉ lý do: I love Tet... 'because' it is a wonderful time (Tôi thích Tết 'bởi vì' nó là thời gian tuyệt vời)." },
-            
-            // Reading Passage 2
-            { id: 24, section: "SECTION C: READING", inst: "Question 7: Read the passage, then answer the questions.", passage: "At school, students can learn many interesting subjects every day. Each subject opens a window for them to explore a wonderful world. For example, Math helps children work with numbers and shapes. In Science class, they can study amazing things about animals, plants and nature. English and Vietnamese are also very important because they help students speak and write better. Many children love Music and Art because they can sing beautiful songs and paint colorful pictures. Finally, Physical Education (PE) keeps everyone healthy and strong through fun games where learning is always an exciting adventure.", q: "24. According to the passage, what subject helps children work with numbers and shapes?", type: "mcq", options: ["A. Music", "B. Art", "C. Maths", "D. Science"], ans: "C", exp: "Dòng 2: 'Math helps children work with numbers and shapes'." },
-            { id: 25, section: "SECTION C: READING", inst: "Question 7: Read the passage, then answer the questions.", passage: "(Dùng chung văn bản câu 24)", q: "25. In Science class, pupils can learn fantastic things about ___________.", type: "mcq", options: ["A. sports and games.", "B. animals, plants and nature.", "C. songs and pictures.", "D. numbers and shapes."], ans: "B", exp: "Dòng 3: 'In Science class, they can study amazing things about animals, plants and nature'." },
-            { id: 26, section: "SECTION C: READING", inst: "Question 7: Read the passage, then answer the questions.", passage: "(Dùng chung văn bản câu 24)", q: "26. Why are English and Vietnamese very important?", type: "mcq", options: ["A. Because they help students sing better.", "B. Because they help students paint better.", "C. Because they help students speak and write better.", "D. Because they help students play fun games."], ans: "C", exp: "Dòng 4: '...because they help students speak and write better'." },
-            { id: 27, section: "SECTION C: READING", inst: "Question 7: Read the passage, then answer the questions.", passage: "(Dùng chung văn bản câu 24)", q: "27. Many children enjoy Music and Art because they can ___________.", type: "mcq", options: ["A. play football and badminton.", "B. learn about nature.", "C. sing beautiful songs and draw colorful paintings.", "D. work with difficult numbers."], ans: "C", exp: "Dòng 5: '...because they can sing beautiful songs and paint colorful pictures' (draw paintings đồng nghĩa paint pictures)." },
-            { id: 28, section: "SECTION C: READING", inst: "Question 7: Read the passage, then answer the questions.", passage: "(Dùng chung văn bản câu 24)", q: "28. Which sentence is NOT true in the paragraph?", type: "mcq", options: ["A. Physical Education (PE) keeps everyone healthy and strong.", "B. School is a wonderful place.", "C. Learning is sometimes an exciting adventure.", "D. Students can study amazing things about animals in Science."], ans: "B", exp: "Câu B không được đề cập trực tiếp trong bài (bài nói 'Each subject opens a window to explore a wonderful world' chứ không khẳng định School is a wonderful place)." },
-
-            // SECTION D: WRITING
-            { id: 29, section: "SECTION D: WRITING", inst: "Question 8: Reorder the words to make the correct sentences. (Chạm vào các từ để sắp xếp lại)", q: "would / in / Lan / to be / What / like / future / the / ?", type: "reorder", words: ["would", "in", "Lan", "to be", "What", "like", "future", "the", "?"], ans: "What would Lan like to be in the future?", exp: "Mẫu câu hỏi ước mơ: What + would + S + like to be + in the future?" },
-            { id: 30, section: "SECTION D: WRITING", inst: "Question 8: Reorder the words to make the correct sentences.", q: "buy / I / branch / a / for/ Tet. / of / peach blossoms / won't /", type: "reorder", words: ["buy", "I", "branch", "a", "for", "Tet.", "of", "peach blossoms", "won't"], ans: "I won't buy a branch of peach blossoms for Tet.", exp: "S (I) + won't + V (buy) + O (a branch of peach blossoms) + for Tet." },
-            { id: 31, section: "SECTION D: WRITING", inst: "Question 8: Reorder the words to make the correct sentences.", q: "usually / late / Our / year / in / school / finishes / May.", type: "reorder", words: ["usually", "late", "Our", "year", "in", "school", "finishes", "May."], ans: "Our school year usually finishes late in May.", exp: "Our school year (năm học) + Trạng từ tần suất (usually) + V (finishes) + late in May (cuối tháng 5)." },
+<!-- ... existing code ... -->
             { id: 32, section: "SECTION D: WRITING", inst: "Question 8: Reorder the words to make the correct sentences.", q: "the / Does / go/ the / with / she / weekends / her / to / often / friends / cinema / on / ?", type: "reorder", words: ["the", "Does", "go", "the", "with", "she", "weekends", "her", "to", "often", "friends", "cinema", "on", "?"], ans: "Does she often go to the cinema with her friends on the weekends?", exp: "Trợ động từ (Does) + S (she) + Trạng từ (often) + V (go) + to the cinema + with her friends + on the weekends?" },
 
-            { id: 33, section: "SECTION D: WRITING", inst: "Question 9: Rewrite the sentence so that it has the same meaning.", q: "The Red river is shorter than the Mekong river.<br>→ <b>The Mekong river</b> ............................................", type: "input", prefix: "The Mekong river ", ans: "is longer than the Red river", exp: "Sông Hồng ngắn hơn sông Mekong => Sông Mekong dài hơn sông Hồng." },
+            { id: 33, section: "SECTION D: WRITING", inst: "Question 9: Rewrite the sentence so that it has the same meaning.", q: "The Red river is shorter than the Mekong river.<br>→ <b>The Mekong river</b> ............................................", type: "input", prefix: "The Mekong river ", ans: ["is longer than the Red river", "is not as short as the Red river"], exp: "Có thể dùng so sánh hơn: Sông Mekong dài hơn (is longer than) hoặc so sánh bằng dạng phủ định: không ngắn bằng (is not as short as)." },
             { id: 34, section: "SECTION D: WRITING", inst: "Question 9: Rewrite the sentence so that it has the same meaning.", q: "There are twenty girls in my class.<br>→ <b>My class</b> ............................................", type: "input", prefix: "My class ", ans: "has twenty girls", exp: "There are (Có) + N + in + Nơi chốn => Nơi chốn + has/have + N." },
-            { id: 35, section: "SECTION D: WRITING", inst: "Question 9: Rewrite the sentence so that it has the same meaning.", q: "My brother spends two hours finishing his homework every day.<br>→ <b>It takes</b> ............................................", type: "input", prefix: "It takes ", ans: "my brother two hours to finish his homework every day", exp: "Cấu trúc: S + spend + Time + V-ing = It takes + (O) + Time + to V." },
-            { id: 36, section: "SECTION D: WRITING", inst: "Question 9: Rewrite the sentence so that it has the same meaning.", q: "How much is your new computer?<br>→ <b>What is</b> ............................................", type: "input", prefix: "What is ", ans: "the price of your new computer", exp: "How much is + N? = What is the price of + N? (Hỏi giá cả)." },
-
-            { id: 37, section: "SECTION D: WRITING", inst: "Question 10: Use the words given to make sentences.", q: "Some students / clean / the school yard / moment.", type: "input", ans: "Some students are cleaning the school yard at the moment.", exp: "Có 'at the moment' -> Hiện tại tiếp diễn: S + am/is/are + V-ing." },
-            { id: 38, section: "SECTION D: WRITING", inst: "Question 10: Use the words given to make sentences.", q: "This summer holiday,/ Mai / going / visit / Ha Long Bay / family.", type: "input", ans: "This summer holiday, Mai is going to visit Ha Long Bay with her family.", exp: "Kế hoạch tương lai -> Tương lai gần 'is going to visit'. Thêm giới từ 'with' (với gia đình)." },
-            { id: 39, section: "SECTION D: WRITING", inst: "Question 10: Use the words given to make sentences.", q: "Hoa / usually / go / school / foot / but / today / she / ride / bike.", type: "input", ans: "Hoa usually goes to school on foot but today she is riding a bike.", exp: "Vế đầu có 'usually' -> Hiện tại đơn (goes). Vế sau có 'today' ám chỉ hành động khác thường ngày -> HT Tiếp diễn (is riding)." },
-            { id: 40, section: "SECTION D: WRITING", inst: "Question 10: Use the words given to make sentences.", q: "Jack / think / learning English well / great way / find / good job.", type: "input", ans: "Jack thinks learning English well is a great way to find a good job.", exp: "Jack (số ít) -> thinks. Thêm tobe 'is', mạo từ 'a' trước great way, và 'to' (để) trước find." }
-        ];
-
-        // System State
-        const app = {
-            state: {
-                studentName: '',
-                currentIndex: 0,
-                scores: {}, // { index: true (perfect) | false (redo) }
-                isCurrentPassed: false,
-                wrongAnswersDetails: [] // [{ qId, lastWrong, correct }]
-            },
-            
-            // Reorder Type specific state
-            reorderState: {
-                pool: [],
-                selected: []
-            },
-
-            // Common passage text to persist across questions
-            commonPassageContent: "",
-
-            init() {
-                // Focus on name input
-                document.getElementById('student-name-input').focus();
-                
-                // Allow Enter key to start
-                document.getElementById('student-name-input').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.startQuiz();
-                });
-            },
-
-            startQuiz() {
-                const name = document.getElementById('student-name-input').value.trim();
-                if (!name) {
-                    document.getElementById('name-error').classList.remove('hidden');
-                    return;
-                }
-                
-                this.state.studentName = name;
-                document.getElementById('display-name').innerText = name;
-                
-                // Build Quick Nav Dropdown
-                const nav = document.getElementById('quick-nav');
-                nav.innerHTML = '';
-                DATA.forEach((q, i) => {
-                    const opt = document.createElement('option');
-                    opt.value = i;
-                    opt.text = `Câu ${q.id}`;
-                    nav.appendChild(opt);
-                });
-
-                document.getElementById('welcome-screen').classList.add('hidden');
-                document.getElementById('app-screen').classList.remove('hidden');
-                
-                this.renderQuestion(0);
-            },
-
-            jumpToQuestion(index) {
-                index = parseInt(index);
-                this.renderQuestion(index);
-            },
-
-            renderQuestion(index) {
-                this.state.currentIndex = index;
-                const q = DATA[index];
-                this.state.isCurrentPassed = this.state.scores[index] !== undefined;
-
-                // Update Progress & UI
-                document.getElementById('q-number').innerText = q.id;
-                document.getElementById('section-title').innerText = q.section;
-                document.getElementById('instruction-text').innerHTML = q.inst;
-                document.getElementById('q-text').innerHTML = q.q;
-                
-                document.getElementById('quick-nav').value = index;
-                this.updateProgressBar();
-
-                // Handle Sticky Passage
-                const passageContainer = document.getElementById('passage-container');
-                if (q.passage) {
-                    if (q.passage.startsWith("(Dùng chung")) {
-                        // Keep previous passage
-                        passageContainer.classList.remove('hidden');
-                    } else {
-                        passageContainer.innerHTML = q.passage;
-                        this.commonPassageContent = q.passage;
-                        passageContainer.classList.remove('hidden');
-                    }
-                } else {
-                    passageContainer.classList.add('hidden');
-                }
-
-                // Render Input Area based on type
-                const inputArea = document.getElementById('input-area');
-                inputArea.innerHTML = '';
-                
-                document.getElementById('btn-check').classList.remove('hidden');
-                document.getElementById('btn-next').classList.add('hidden');
-                document.getElementById('btn-finish').classList.add('hidden');
-
-                if (q.type === 'mcq') {
-                    // Hide manual check button for MCQ, it checks instantly
-                    document.getElementById('btn-check').classList.add('hidden');
-                    
-                    q.options.forEach(opt => {
-                        const btn = document.createElement('button');
-                        btn.className = 'mcq-btn';
-                        btn.innerText = opt;
-                        // Determine if already passed
-                        if (this.state.isCurrentPassed) {
-                            btn.disabled = true;
-                            if (opt.startsWith(q.ans + ".")) {
-                                btn.classList.add('correct');
-                            }
-                        } else {
-                            btn.onclick = () => this.checkMCQAnswer(btn, opt.charAt(0));
-                        }
-                        inputArea.appendChild(btn);
-                    });
-                } 
-                else if (q.type === 'input') {
-                    if (q.hint) {
-                        const hintEl = document.createElement('div');
-                        hintEl.className = "text-sm text-pink-600 font-bold mb-2";
-                        hintEl.innerText = q.hint;
-                        inputArea.appendChild(hintEl);
-                    }
-                    const inputWrapper = document.createElement('div');
-                    inputWrapper.className = "flex items-center gap-2";
-                    
+<!-- ... existing code ... -->
                     if (q.prefix) {
                         const pre = document.createElement('span');
                         pre.className = "font-bold text-gray-700 text-lg whitespace-nowrap";
@@ -561,30 +19,13 @@
                     input.autocomplete = 'off';
                     
                     if (this.state.isCurrentPassed) {
-                        input.value = q.ans;
+                        input.value = Array.isArray(q.ans) ? q.ans[0] : q.ans;
                         input.disabled = true;
                         input.classList.add('bg-green-50', 'border-green-500', 'text-green-700', 'font-bold');
                         document.getElementById('btn-check').classList.add('hidden');
                     } else {
                         // Allow Enter to check
-                        input.addEventListener('keypress', (e) => {
-                            if (e.key === 'Enter') this.checkManualInput();
-                        });
-                        setTimeout(() => input.focus(), 100);
-                    }
-                    inputWrapper.appendChild(input);
-                    inputArea.appendChild(inputWrapper);
-                }
-                else if (q.type === 'reorder') {
-                    this.renderReorderUI(q, inputArea);
-                }
-
-                // If already passed, show correct next/finish button
-                if (this.state.isCurrentPassed) {
-                    this.showNextOrFinish();
-                }
-            },
-
+<!-- ... existing code ... -->
             renderReorderUI(q, container) {
                 const wrapper = document.createElement('div');
                 
@@ -603,57 +44,11 @@
                 if (this.state.isCurrentPassed) {
                     // Show correct answer directly
                     document.getElementById('btn-check').classList.add('hidden');
-                    const words = q.ans.split(' ');
+                    const ansStr = Array.isArray(q.ans) ? q.ans[0] : q.ans;
+                    const words = ansStr.split(' ');
                     words.forEach(w => {
                         const span = document.createElement('span');
-                        span.className = "word-badge bg-green-100 border-green-400 text-green-800 cursor-default shadow-none";
-                        span.innerText = w;
-                        dropzone.appendChild(span);
-                    });
-                    poolZone.innerHTML = "<span class='text-gray-400 italic text-sm'>Hoàn thành</span>";
-                } else {
-                    // Init logic
-                    // Shuffle words for pool
-                    this.reorderState.pool = [...q.words].sort(() => Math.random() - 0.5);
-                    this.reorderState.selected = [];
-                    this.updateReorderDOM();
-                }
-            },
-
-            updateReorderDOM() {
-                const dropzone = document.getElementById('answer-dropzone');
-                const pool = document.getElementById('word-pool');
-                
-                dropzone.innerHTML = '';
-                pool.innerHTML = '';
-
-                this.reorderState.selected.forEach((word, index) => {
-                    const el = document.createElement('span');
-                    el.className = 'word-badge bg-indigo-50 border-indigo-300 text-indigo-800';
-                    el.innerText = word;
-                    el.onclick = () => {
-                        // Move back to pool
-                        this.reorderState.selected.splice(index, 1);
-                        this.reorderState.pool.push(word);
-                        this.updateReorderDOM();
-                    };
-                    dropzone.appendChild(el);
-                });
-
-                this.reorderState.pool.forEach((word, index) => {
-                    const el = document.createElement('span');
-                    el.className = 'word-badge';
-                    el.innerText = word;
-                    el.onclick = () => {
-                        // Move to selected
-                        this.reorderState.pool.splice(index, 1);
-                        this.reorderState.selected.push(word);
-                        this.updateReorderDOM();
-                    };
-                    pool.appendChild(el);
-                });
-            },
-
+<!-- ... existing code ... -->
             // Text Normalization to avoid strict typo fails
             normalizeString(str) {
                 return str.toLowerCase()
@@ -662,27 +57,17 @@
                           .trim();
             },
 
-            checkMCQAnswer(btnEl, selectedLetter) {
-                const q = DATA[this.state.currentIndex];
-                const isCorrect = selectedLetter === q.ans;
-                
-                if (isCorrect) {
-                    btnEl.classList.add('correct');
-                    this.handleCorrectAnswer(q);
-                    // Disable other buttons
-                    const btns = document.querySelectorAll('.mcq-btn');
-                    btns.forEach(b => b.disabled = true);
-                } else {
-                    btnEl.classList.add('wrong');
-                    setTimeout(() => btnEl.classList.remove('wrong'), 1000);
-                    this.handleWrongAnswer(q, selectedLetter);
+            // Check if user answer matches any of the correct answers (String or Array)
+            checkIsCorrect(userAns, qAns) {
+                const normalizedUser = this.normalizeString(userAns);
+                if (Array.isArray(qAns)) {
+                    return qAns.some(ans => normalizedUser === this.normalizeString(ans));
                 }
+                return normalizedUser === this.normalizeString(qAns);
             },
 
-            checkManualInput() {
-                const q = DATA[this.state.currentIndex];
-                let userAns = "";
-
+            checkMCQAnswer(btnEl, selectedLetter) {
+<!-- ... existing code ... -->
                 if (q.type === 'input') {
                     const inputEl = document.getElementById('manual-input');
                     if (!inputEl) return;
@@ -697,17 +82,13 @@
                         }
                     }
 
-                    if (this.normalizeString(fullUserAns) === this.normalizeString(q.ans)) {
+                    if (this.checkIsCorrect(fullUserAns, q.ans)) {
                         this.handleCorrectAnswer(q);
                         inputEl.classList.add('bg-green-50', 'border-green-500', 'text-green-700');
                         inputEl.disabled = true;
                         document.getElementById('btn-check').classList.add('hidden');
                     } else {
-                        inputEl.classList.add('border-red-500', 'bg-red-50');
-                        setTimeout(() => inputEl.classList.remove('border-red-500', 'bg-red-50'), 1000);
-                        this.handleWrongAnswer(q, userAns || "Để trống");
-                    }
-                } 
+<!-- ... existing code ... -->
                 else if (q.type === 'reorder') {
                     // Reconstruct sentence maintaining original punctuation if possible, 
                     // but compare normalized
@@ -717,133 +98,11 @@
                         return;
                     }
                     
-                    if (this.normalizeString(userAns) === this.normalizeString(q.ans)) {
+                    if (this.checkIsCorrect(userAns, q.ans)) {
                         this.handleCorrectAnswer(q);
                         document.getElementById('btn-check').classList.add('hidden');
                         // Make badges green
-                        document.querySelectorAll('#answer-dropzone .word-badge').forEach(b => {
-                            b.classList.add('bg-green-100', 'border-green-400', 'text-green-800');
-                            b.onclick = null; // disable click
-                            b.style.cursor = 'default';
-                        });
-                    } else {
-                        this.handleWrongAnswer(q, userAns);
-                    }
-                }
-            },
-
-            handleCorrectAnswer(q) {
-                this.state.isCurrentPassed = true;
-                
-                // Record Score
-                if (this.state.scores[this.state.currentIndex] === undefined) {
-                    this.state.scores[this.state.currentIndex] = true; // Perfect
-                }
-
-                // Update Nav Dropdown Mark
-                const navOpts = document.getElementById('quick-nav').options;
-                if (!navOpts[this.state.currentIndex].text.includes('✅')) {
-                    navOpts[this.state.currentIndex].text += ' ✅';
-                }
-
-                this.updateProgressBar();
-                this.showNextOrFinish();
-                this.showToast("Chính xác! Giỏi quá 🌟", 'success', q.exp);
-            },
-
-            handleWrongAnswer(q, userVal) {
-                // Mark as not perfect
-                this.state.scores[this.state.currentIndex] = false; 
-
-                // Log details for report
-                const existingLog = this.state.wrongAnswersDetails.find(d => d.qId === q.id);
-                if (existingLog) {
-                    existingLog.lastWrong = userVal;
-                } else {
-                    this.state.wrongAnswersDetails.push({
-                        qId: q.id,
-                        text: q.q,
-                        lastWrong: userVal,
-                        correct: q.ans
-                    });
-                }
-
-                this.showToast("Chưa đúng rồi, em thử lại nhé! 🤔", 'error');
-            },
-
-            showNextOrFinish() {
-                if (this.state.currentIndex < DATA.length - 1) {
-                    const nxtBtn = document.getElementById('btn-next');
-                    nxtBtn.classList.remove('hidden');
-                    nxtBtn.classList.add('celebrate');
-                    setTimeout(() => nxtBtn.classList.remove('celebrate'), 500);
-                } else {
-                    const finBtn = document.getElementById('btn-finish');
-                    finBtn.classList.remove('hidden');
-                    finBtn.classList.add('celebrate');
-                }
-            },
-
-            nextQuestion() {
-                if (this.state.currentIndex < DATA.length - 1) {
-                    this.renderQuestion(this.state.currentIndex + 1);
-                }
-            },
-
-            updateProgressBar() {
-                const passedCount = Object.keys(this.state.scores).length;
-                const total = DATA.length;
-                const pct = (passedCount / total) * 100;
-                document.getElementById('progress-text').innerText = `${passedCount}/${total}`;
-                document.getElementById('progress-bar').style.width = `${pct}%`;
-            },
-
-            showToast(msg, type, exp = null) {
-                const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                
-                let innerHTML = `<div>${msg}</div>`;
-                if (exp && type === 'success') {
-                    innerHTML += `<div class="toast-exp">💡 <b>Giải thích:</b> ${exp}</div>`;
-                }
-                toast.innerHTML = innerHTML;
-
-                container.appendChild(toast);
-                
-                // Remove after delay
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(100px)';
-                    toast.style.transition = 'all 0.4s ease';
-                    setTimeout(() => toast.remove(), 400);
-                }, type === 'success' ? 4000 : 2000); // Success shows longer so they read explanation
-            },
-
-            showReport() {
-                document.getElementById('app-screen').classList.add('hidden');
-                const repScreen = document.getElementById('report-screen');
-                repScreen.classList.remove('hidden');
-
-                document.getElementById('report-name').innerText = this.state.studentName;
-
-                let perfect = 0;
-                let redo = 0;
-                Object.values(this.state.scores).forEach(val => {
-                    if (val === true) perfect++;
-                    else if (val === false) redo++;
-                });
-
-                document.getElementById('stat-perfect').innerText = perfect;
-                document.getElementById('stat-redo').innerText = redo;
-
-                const tbody = document.getElementById('report-table-body');
-                tbody.innerHTML = '';
-                
-                if (this.state.wrongAnswersDetails.length === 0) {
-                    document.getElementById('no-errors-msg').classList.remove('hidden');
-                } else {
-                    // Sort by question ID
+<!-- ... existing code ... -->
                     this.state.wrongAnswersDetails.sort((a,b) => a.qId - b.qId);
                     
                     this.state.wrongAnswersDetails.forEach(row => {
@@ -851,27 +110,17 @@
                         tr.className = "border-b hover:bg-gray-50";
                         // Strip HTML from question text for clean table display
                         const cleanText = row.text.replace(/<[^>]*>?/gm, '');
+                        const correctDisplay = Array.isArray(row.correct) 
+                                                ? row.correct.join('<br><span class="text-gray-400 text-xs font-normal">hoặc</span><br>') 
+                                                : row.correct;
                         
                         tr.innerHTML = `
                             <td class="p-3 text-center font-bold text-gray-500">${row.qId}</td>
                             <td class="p-3 max-w-xs truncate" title="${cleanText}">${cleanText}</td>
                             <td class="p-3 text-red-500 font-semibold italic">"${row.lastWrong}"</td>
-                            <td class="p-3 text-green-600 font-bold bg-green-50/50">${row.correct}</td>
+                            <td class="p-3 text-green-600 font-bold bg-green-50/50 leading-tight">${correctDisplay}</td>
                         `;
                         tbody.appendChild(tr);
                     });
                 }
-                
-                // Scroll to top of report
-                window.scrollTo(0,0);
-            }
-        };
-
-        // Initialize App
-        window.onload = () => {
-            app.init();
-        };
-
-    </script>
-</body>
-</html>
+<!-- ... existing code ... -->
